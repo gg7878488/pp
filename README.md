@@ -1,1 +1,77 @@
-"# pp" 
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <ctime>
+#include <cstdlib>
+#include <fstream>
+
+bool Find(std::vector<std::vector<int>>& matrix, int x = 0, int y = 0) {
+    int n = matrix.size();
+
+    if (x < 0 || x >= n || y < 0 || y >= n || matrix[x][y] == 0) {
+        return false;
+    }
+    if (x == n - 1 && y == n - 1) {
+        return true;
+    }
+    matrix[x][y] = 0;
+
+    if (Find(matrix, x + 1, y)==true) return true;
+    if (Find(matrix, x - 1, y)==true) return true;
+    if (Find(matrix, x, y + 1)==true) return true;
+    if (Find(matrix, x, y - 1)==true) return true;
+
+    return false;
+}
+
+int main() {
+    std::srand(std::time(0));
+    int m;
+    std::cin >> m;
+
+
+    std::vector<std::vector<int>> matrix(m, std::vector<int>(m));
+
+    std::vector<int> freq(100, 0);
+
+
+    for (int n = 0; n < 100; n++) {
+        for (int p = 0; p < 1000; p++) {
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < m; j++) {
+                matrix[i][j] = std::rand() % 100;
+            }
+        }
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < m; j++) {
+                if (matrix[i][j] <= n)
+                    matrix[i][j] = 1;
+                else matrix[i][j] = 0;
+            }
+        }
+
+        if (Find(matrix) == true) {
+            freq[n]++;
+        }
+    }
+
+    }        
+    for (int i = 0; i < 100; i++) {
+            std::cout << freq[i];
+            std::cout << " ";
+        }
+    std::ofstream out;         
+    out.open("C:\\Users\\test2023\\Desktop\\gg\\.vs\\gg\\v17\\ConsoleApplication1\\ConsoleApplication1\\gg.txt");      
+    if (out.is_open())
+    {
+        for (int i = 0; i < 100; i++) {
+
+            out << freq[i] << '\n';
+        }
+    }
+    out.close();
+
+    return 0;
+}
