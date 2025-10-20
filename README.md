@@ -1,3 +1,79 @@
+=================================================================================
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <ctime>
+#include <cstdlib>
+
+bool Find(std::vector<std::vector<int>>& matrix,  int x , int y) {
+    int n = matrix.size();
+
+        if (y == n - 1) {
+            return true;
+        }
+        if (x < 0 || x >= n || y < 0 || y >= n || matrix[x][y] == 0) {
+            return false;
+        }
+
+
+        matrix[x][y] = 0;
+
+
+        if (Find(matrix, x + 1, y)) return true;
+        if (Find(matrix, x - 1, y)) return true;
+        if (Find(matrix, x, y + 1)) return true;
+        if (Find(matrix, x, y - 1)) return true;
+
+    return false;
+}
+
+int main() {
+    std::srand(std::time(0));
+    int m;
+    std::cin >> m;
+    std::vector<std::vector<int>> matrix(m, std::vector<int>(m));
+
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < m; j++) {
+            matrix[i][j] = std::rand() % 2;
+        }
+    }
+
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < m; j++) {
+            std::cout << matrix[i][j] << " ";
+        }
+        std::cout << std::endl;
+    }
+
+    int n = matrix.size();
+    int y = 0;
+
+
+    for (int x1 = 0; x1 < n ; x1++)
+    {
+        Find(matrix, x1,0);
+
+
+        if (Find(matrix,x1,0)) {
+            std::cout << "true ";
+        }
+        else {
+            std::cout << "false ";
+        }
+    }
+    return 0;
+}
+===================================================================================================
+
+
+
+
+
+
+
+
+
 #include <iostream>
 #include <vector>
 #include <queue>
