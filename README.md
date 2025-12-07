@@ -1,3 +1,114 @@
+#include <iostream>
+#include <vector>
+#include <cstdlib>
+#include <ctime>
+
+bool Find(std::vector<std::vector<int>>& matrix, int startX, int startY) {
+    int n = matrix.size();
+    
+    if (startX < 0 || startX >= n || startY < 0 || startY >= n || matrix[startX][startY] == 0) {
+        return false;
+    }
+    
+    if (startX == n - 1) {
+        return true;
+    }
+    
+    matrix[startX][startY] = 0;
+    
+    if (Find(matrix, startX + 1, startY)) return true;
+    if (Find(matrix, startX - 1, startY)) return true;
+    if (Find(matrix, startX, startY + 1)) return true;
+    if (Find(matrix, startX, startY - 1)) return true;
+    
+    return false;
+}
+
+int main() {
+    std::srand(std::time(0));
+    int m;
+    std::cin >> m;
+    std::vector<std::vector<int>> matrix(m, std::vector<int>(m));
+    std::vector<int> freq(100, 0);
+
+for (int n = 0; n < 100; n++) { 
+    
+    
+ for (int p = 0; p < 3; p++) {
+     
+     
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < m; j++) {
+            matrix[i][j] = std::rand() % 100;
+        }
+    }
+
+    /* for (int i = 0; i < m; i++) {
+        for (int j = 0; j < m; j++) {
+            std::cout << matrix[i][j] << " ";
+        }
+        std::cout << std::endl;
+    } */
+    
+    
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < m; j++) {
+            if (matrix[i][j] <= n)
+                matrix[i][j] = 1;
+            else matrix[i][j] = 0;
+        }
+    }
+    
+   /* for (int i = 0; i < m; i++) {
+        for (int j = 0; j < m; j++) {
+            std::cout << matrix[i][j] << " ";
+        }
+        std::cout << std::endl;
+    } */
+    
+    int a = 0;
+    for (int startY = 0; startY < m; startY++) {
+        if (matrix[0][startY] == 1) {
+            std::vector<std::vector<int>> tempMatrix = matrix;
+            if (Find(tempMatrix, 0, startY)) {
+                a++;
+            }
+        }
+    }
+    
+    
+    
+    
+    
+    if (a > 0)
+    {
+        //std::cout << "true" << std::endl;
+        freq[n]++;
+    }
+
+}
+}
+for (int i = 0; i < 100; i++) {
+        std::cout << freq[i];
+        std::cout << " ";
+    }
+    
+
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 рабочая:
 #include <iostream>
 #include <vector>
