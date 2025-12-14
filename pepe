@@ -1,0 +1,127 @@
+#include <iostream>
+#include <vector>
+#include <cstdlib>
+#include <ctime>
+#include <algorithm>
+
+using namespace std;
+
+class DSU {
+private:
+    vector<int> parents;
+    vector<int> size;
+
+public:
+    DSU(int n) {
+        parents.resize(n);
+        for (int i = 0; i < n; i++)
+            parents[i] = i;
+        size.resize(n, 1);
+    }
+
+    int find(int i) {
+        if (parents[i] == i) return i;
+        return parents[i] = find(parents[i]);
+    }
+
+    bool isConnected(int i, int j) {
+        return find(i) == find(j);
+    }
+
+    void connect(int i, int j) {
+        if (isConnected(i, j)) return;
+
+        int p1 = find(i);
+        int p2 = find(j);
+
+        if (size[p1] < size[p2]) swap(p1, p2);
+        size[p1] += size[p2];
+        parents[p2] = p1;
+    }
+};
+
+
+void Rn(vector<vector<int>> &matrix, int m, int t) {
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < m; j++) {
+            int x = rand() % 100;
+            
+            cout << x << " ";
+            if (x <= t) {matrix[i][j] = 1;
+             //cout << matrix[i][j] << " ";
+            }
+            else matrix[i][j] = 0;
+        }
+cout << endl;
+    }
+    //cout << endl;
+}
+
+
+bool traject(const vector<vector<int>> &matrix, int m) {
+    if (matrix[0][0] == 0 || matrix[m-1][m-1] == 0)
+        return false;
+
+    DSU dsu(m * m);
+
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < m; j++) {
+            if (matrix[i][j] == 0) continue;
+
+            int v = i * m + j;
+
+            if (j > 0 && matrix[i][j - 1] == 1) {
+                dsu.connect(v, i * m + (j - 1));
+            }
+
+            if (i > 0 && matrix[i - 1][j] == 1) {
+                dsu.connect(v, (i - 1) * m + j);
+            }
+        }
+    }
+
+    return dsu.isConnected(0, m * m - 1);
+}
+
+int main() {
+    srand(std::time(0));
+
+    int m;
+    int t;
+    cin >> m;
+    cin >> t;
+
+    vector<vector<int>> matrix(m, vector<int>(m));
+
+    //for (int t = 0; t <= 100; t++) {
+        //int cnt = 0;
+
+        // 3 
+        //for (int k = 0; k < 3; k++) {
+            Rn(matrix, m, t);
+            
+            matrix[0][0] = 1; 
+            matrix[m-1][m-1] = 1;
+            //if (traject(matrix, m))
+                //cnt++;
+        //}
+        
+        
+for (int i = 0; i < m; i++) {
+        for (int j = 0; j < m; j++) {
+            cout << matrix[i][j] << " ";
+        }
+         
+        cout << endl;
+}  
+
+if (traject(matrix, m))
+    cout << "true";
+else
+    cout << "false";
+
+       // cout << "t = " << t << " : " << cnt << " / 3" << endl;
+   // }
+
+    return 0;
+}
